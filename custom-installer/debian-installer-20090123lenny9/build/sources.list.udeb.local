@@ -1,0 +1,2 @@
+deb copy:/home/shw2/isante-cd/custom-installer/debian-installer-20090123lenny9/build/ localudebs/
+deb http://archive.debian.org/debian lenny main/debian-installer

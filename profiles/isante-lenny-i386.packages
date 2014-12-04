@@ -1,0 +1,78 @@
+#cirg-backdoor for cirgadmin user and VPN connection
+cirg-backdoor
+strongswan
+resolvconf
+
+#Turnkey
+confconsole
+turnkey-pylib
+python-dialog
+
+#required for network card used in HP machines
+firmware-bnx2
+
+#required for OpenELIS
+postgresql-8.3
+postgresql-contrib-8.3
+libpg-java
+python-pgsql
+
+#required for iSante
+isante
+isante-live-config
+ssl-cert
+php5-cli
+php5-gd
+libgmp3c2
+libcrypt-rijndael-perl
+libcrypt-cbc-perl
+libio-zlib-perl
+libtemplate-perl
+sun-java6-jdk
+sun-java6-jre
+slapd
+tomcat5.5
+curl
+ntp
+bzip2
+locales-all
+sudo
+unattended-upgrades
+anacron
+
+#ease of use
+apcupsd
+apcupsd-cgi
+#more trouble then it is worth #clamav-daemon
+dosfstools
+emacs22-nox
+finger
+gpm
+lynx
+locate
+lsof
+mc
+mosh
+openssh-client
+openssh-server
+pciutils
+phpmyadmin
+procinfo
+rsync
+screen
+usbmount
+wget
+
+#developer
+debconf-utils
+zerofree
+
+# stuff needed to build sqlProcess
+#make
+#php5-dev
+#ghc6
+#libghc6-cgi-dev
+#libghc6-mtl-dev
+#libghc6-network-dev
+# ##libghc6-parsec-dev
+#libghc6-xhtml-dev

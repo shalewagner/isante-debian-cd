@@ -1,0 +1,5 @@
+pythondialog (2.7-1turnkey+4) UNRELEASED; urgency=low
+
+  * Add changelog file so package will build.
+
+ -- ew <ew@uw.edu>  Fri, 24 Jun 2011 09:25:55 -0700

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Add megaraid_sas module to initramfs (fix for Dell PE2950)
+echo megaraid_sas >> /etc/initramfs-tools/modules
+update-initramfs -u

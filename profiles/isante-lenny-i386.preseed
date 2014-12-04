@@ -1,0 +1,133 @@
+
+#use framebuffer console, better support for UTF8 fonts
+d-i     debian-installer/add-kernel-opts        string video=vesa:ywrap,mtrr vga=788
+
+# netcfg will choose an interface that has link if possible. This makes it
+# skip displaying a list if there is more than one interface.
+d-i netcfg/choose_interface select auto
+
+# Any hostname and domain names assigned from dhcp take precedence over
+# values set here. However, setting the values still prevents the questions
+# from being shown, even if values come from dhcp.
+d-i netcfg/get_hostname string isante
+#d-i netcfg/get_domain string
+
+# If you prefer to configure the network manually, uncomment this line and
+# the static network configuration below.
+d-i netcfg/disable_dhcp boolean true
+
+# Static network configuration.
+d-i netcfg/get_ipaddress string 192.168.1.50
+d-i netcfg/get_gateway string 192.168.1.1
+d-i netcfg/get_nameservers string 192.168.1.1
+d-i netcfg/get_netmask string 255.255.255.0
+d-i netcfg/confirm_static boolean true
+
+#It's unclear if this should be true or false so keep the default.
+# If non-free firmware is needed for the network or other hardware, you can
+# configure the installer to always try to load it, without prompting. Or
+# change to false to disable asking.
+#d-i hw-detect/load_firmware boolean true
+
+### Mirror settings
+# Use a network mirror?
+apt-mirror-setup        apt-setup/use_mirror    boolean false
+# Cannot access security updates
+#how do you ignore this error message???
+#apt-setup-udeb  apt-setup/security-updates-failed       error
+#apt-setup-udeb  apt-setup/services-select       multiselect security
+apt-setup-udeb  apt-setup/services-select       multiselect
+# If you select ftp, the mirror/country string does not need to be set.
+#d-i mirror/protocol string ftp
+d-i mirror/country string enter information manually
+d-i mirror/http/hostname string http.us.debian.org
+d-i mirror/http/directory string /debian
+d-i mirror/http/proxy string
+
+
+# You may set this to any valid setting for $TZ; see the contents of
+# /usr/share/zoneinfo/ for valid values.
+#d-i time/zone string Etc/UTC
+d-i time/zone string America/Port-au-Prince
+
+# Skip creation of a root account (normal user account will be able to
+# use sudo).
+d-i passwd/root-login boolean false
+# We don't want a normal user account either but the installer requires that one be created if there is no root account. This is a workaround based on this bug. http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=425859
+# setup-isante.pl will create the real account during the first boot.
+d-i passwd/user-fullname string Dummy Installer Account
+d-i passwd/username string eishahohceix
+d-i passwd/user-password-crypted password !!
+d-i preseed/late_command string chroot /target deluser eishahohceix --remove-all-files
+##; chroot /target delgroup eishahohceix
+
+# Uncomment this if you don't want to use a network mirror.
+#d-i apt-setup/use_mirror boolean true
+
+# Some versions of the installer can report back on what software you have
+# installed, and what software you use. The default is not to report back,
+# but sending reports helps the project determine what software is most
+# popular and include it on CDs.
+popularity-contest popularity-contest/participate boolean false
+
+# Install the bigmem kernel
+# for 4.1 #d-i base-installer/kernel/which-kernel select linux-image-2.6-686-bigmem
+bootstrap-base  base-installer/kernel/image     select linux-image-686-bigmem
+#bootstrap-base  base-installer/kernel/image     select linux-image-2.6.26-1-686-bigmem
+
+#locales: These are handled by boot parameters so commented out here and just for reference.
+#d-i     debian-installer/locale select  fr_FR
+#d-i     localechooser/shortlist select  other
+#d-i     localechooser/continentlist     select  Caribbean
+#d-i     localechooser/countrylist/Caribbean     select  HT
+
+
+
+#iSante stuff
+
+#phpmyadmin 
+phpmyadmin      phpmyadmin/reconfigure-webserver        multiselect apache2
+
+#mysql
+mysql-server-5.0        mysql-server/root_password_again   password
+mysql-server-5.0        mysql-server/root_password         password
+
+#java
+sun-java6-bin   shared/accepted-sun-dlj-v1-1    boolean true
+sun-java6-jre   shared/accepted-sun-dlj-v1-1    boolean true
+
+#slapd
+slapd   slapd/no_configuration  	boolean	true
+#slapd   slapd/password_mismatch 	note
+#slapd   slapd/fix_directory     	boolean	true
+slapd   slapd/invalid_config    	boolean	false
+slapd   shared/organization     	string uccmspp.org
+#slapd   slapd/upgrade_slapcat_failure   note
+#slapd   slapd/upgrade_slapadd_failure   note
+slapd   slapd/backend   		select BDB
+#slapd   slapd/dump_database     	select never
+#slapd   slapd/allow_ldap_v2     	boolean false
+#slapd   slapd/migrate_ldbm_to_bdb       boolean true
+#slapd   slapd/move_old_database 	boolean true
+#slapd   slapd/suffix_change     	boolean false
+#slapd   slapd/slave_databases_require_updateref note
+#slapd   slapd/dump_database_destdir     string /var/backups/slapd-VERSION
+#slapd   slapd/autoconf_modules  	boolean true
+slapd   slapd/purge_database    	boolean	false
+#slapd   slapd/domain    		string uccmspp.org
+slapd   slapd/domain    		string 
+slapd   slapd/password1 		password
+slapd   slapd/password2			password
+
+#strongswan
+# Do you want to create a self-signed X509 certificate?
+strongswan      strongswan/x509_self_signed     boolean true
+# Do you wish to enable opportunistic encryption in strongSwan?
+strongswan      strongswan/enable-oe    boolean false
+# The type of RSA keypair to create:
+# Choices: x509, plain
+strongswan      strongswan/rsa_key_type select  x509
+# Do you want to create a RSA public/private keypair for this host?
+strongswan      strongswan/create_rsa_key       boolean true
+# Do you have an existing X509 certificate file for strongSwan?
+strongswan      strongswan/existing_x509_certificate    boolean false

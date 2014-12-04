@@ -1,0 +1,3 @@
+iSanté:     https://$ipaddr
+phpmyadmin: https://$ipaddr/phpmyadmin
+SSH/SFTP:   itech@$ipaddr (port 22)

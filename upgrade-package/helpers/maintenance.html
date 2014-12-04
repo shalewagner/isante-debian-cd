@@ -1,0 +1,36 @@
+
+<html>
+<head>
+<title>Mise à niveau du serveur en cours.</title>
+</head>
+<body>
+<h1>Mise à niveau du serveur en cours.</h1>
+<p>
+La mise à niveau se terminera en 30-60 minutes. Désolé pour le dérangement.
+</p>
+
+<!-- Only refresh when server is back to returning status 200. Need because apache may go down completly during the upgrade. -->
+<script type="text/javascript">
+
+function refreshIfOk() {
+  var pollInterval = 15 * 1000;
+  var destination = '/';
+  var request = new XMLHttpRequest();
+
+  try {
+    request.open('GET', destination, false);
+    request.send(null);
+    if (request.status == 200) {
+      window.location = destination;
+    }
+  } catch (error) {
+    /* just ignore the error and try again later */
+  }
+
+  setTimeout('refreshIfOk()', pollInterval);
+}
+
+refreshIfOk();
+</script>
+</body>
+</html>

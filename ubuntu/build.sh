@@ -1,10 +1,19 @@
 #!/bin/bash
 
-TEMPDIR=temporary-files
+# update this to the iso url for newer releases
 RELEASE_ISO_URL=http://releases.ubuntu.com/14.04/ubuntu-14.04.3-server-i386.iso
+
+# change this for a different output file name
 TARGET_FILE_NAME="isante-ubuntu.iso"
 
+# no need to make changes below here unless there is an error
+
+TEMPDIR=temporary-files
+
 RELEASE_ISO=`echo $RELEASE_ISO_URL | awk -F'/' '{print $NF}'`
+
+# changes to script folder so relative paths work correctly
+cd ${0%/*}
 
 if [ $EUID -ne 0 ]
 then
@@ -24,7 +33,7 @@ fi
 
 if [ ! -e "$TARGET_FILE_NAME" ]
 then
-  rm $TARGET_FILE_NAME
+  rm $TEMPDIR/$TARGET_FILE_NAME
 fi
 
 if [ ! -d "$TEMPDIR/iso" ]
@@ -49,6 +58,8 @@ fi
 mount -o loop ./$TEMPDIR/$RELEASE_ISO $TEMPDIR/iso/
 rsync -av $TEMPDIR/iso/ $TEMPDIR/isofiles/
 umount $TEMPDIR/iso
+
+cp txt.cfg $TEMPDIR/isofiles/isolinux
 
 # modify the initrd.gz with our preseed file to automate the 
 # installer with answers to prompts
